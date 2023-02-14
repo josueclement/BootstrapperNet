@@ -2,6 +2,7 @@
 using BootstrapperNetTester.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Windows;
 using System.Windows.Input;
 
@@ -13,6 +14,7 @@ namespace BootstrapperNetTester.ViewModel
         {
             TestTransientServiceCommand = new WpfCommand((param) => true, TestTransientService);
             TestSingletonServiceCommand = new WpfCommand((param) => true, TestSingletonService);
+            TestExceptionCommand = new WpfCommand((param) => true, TestException);
         }
 
         public string? Title
@@ -24,6 +26,7 @@ namespace BootstrapperNetTester.ViewModel
 
         public ICommand TestTransientServiceCommand { get; private set; }
         public ICommand TestSingletonServiceCommand { get; private set; }
+        public ICommand TestExceptionCommand { get; private set; }
 
         private void TestTransientService(object? param)
         {
@@ -41,6 +44,11 @@ namespace BootstrapperNetTester.ViewModel
             {
                 MessageBox.Show(service.SayHello());
             }
+        }
+
+        private void TestException(object? param)
+        {
+            throw new Exception();
         }
     }
 }

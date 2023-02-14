@@ -14,14 +14,13 @@ namespace BootstrapperNetTester
             try
             {
                 new AppBootstrapper().Run();
+                base.OnStartup(e);
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"{Assembly.GetExecutingAssembly().GetName().Name} fatal error:\r\n\r\n {ex}");
                 Environment.Exit(1);
             }
-
-            base.OnStartup(e);
         }
     }
 }

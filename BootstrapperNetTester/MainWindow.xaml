@@ -10,7 +10,8 @@
         <StackPanel HorizontalAlignment="Center"
                     VerticalAlignment="Center">
             <Button Content="Test transient service" Command="{Binding TestTransientServiceCommand}" />
-            <Button Content="Test singleton service" Command="{Binding TestSingletonServiceCommand}"/>
+            <Button Content="Test singleton service" Command="{Binding TestSingletonServiceCommand}" Margin="0 4"/>
+            <Button Content="Test exception" Command="{Binding TestExceptionCommand}"/>
         </StackPanel>
     </Grid>
 </Window>

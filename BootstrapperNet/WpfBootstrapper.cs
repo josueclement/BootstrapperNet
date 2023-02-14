@@ -37,11 +37,14 @@ namespace BootstrapperNet
         #region Public methods
 
         /// <inheritdoc/>
-        public override void Run()
+        public override void Run(bool registerUnhandledExceptions = true)
         {
             RaiseStartingEvent();
             ConfigureServices();
-            RegisterUnhandledExceptions();
+
+            if (registerUnhandledExceptions)
+                RegisterUnhandledExceptions();
+
             ShowSplashScreenAndWindow();
             RaiseStartedEvent();
         }
@@ -61,17 +64,17 @@ namespace BootstrapperNet
         /// <inheritdoc/>
         protected override void RegisterUnhandledExceptions()
         {
-            base.RegisterUnhandledExceptions();
-
             Application.Current.DispatcherUnhandledException += OnDispatcherUnhandledException;
+
+            base.RegisterUnhandledExceptions();
         }
 
         /// <inheritdoc/>
         protected override void UnregisterUnhandledExceptions()
         {
-            base.UnregisterUnhandledExceptions();
-
             Application.Current.DispatcherUnhandledException -= OnDispatcherUnhandledException;
+
+            base.UnregisterUnhandledExceptions();
         }
 
         /// <summary>

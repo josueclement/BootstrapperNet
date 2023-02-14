@@ -9,6 +9,8 @@ namespace BootstrapperNet
     /// </summary>
     public abstract class Bootstrapper
     {
+        protected bool _unhandledExceptionsRegistered;
+
         #region Constructors
 
         /// <summary>
@@ -90,11 +92,15 @@ namespace BootstrapperNet
         /// <summary>
         /// Runs the bootstrapper
         /// </summary>
-        public virtual void Run()
+        /// <param name="registerUnhandledExceptions">Register the unhandled exceptions</param>
+        public virtual void Run(bool registerUnhandledExceptions = true)
         {
             RaiseStartingEvent();
             ConfigureServices();
-            RegisterUnhandledExceptions();
+
+            if (registerUnhandledExceptions) 
+                RegisterUnhandledExceptions();
+
             RaiseStartedEvent();
         }
 
@@ -103,7 +109,8 @@ namespace BootstrapperNet
         /// </summary>
         public virtual void Shutdown()
         {
-            UnregisterUnhandledExceptions();
+            if (_unhandledExceptionsRegistered)
+                UnregisterUnhandledExceptions();
 
             ServiceCollection.Clear();
             ServiceProvider?.Dispose();
@@ -142,6 +149,7 @@ namespace BootstrapperNet
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
+            _unhandledExceptionsRegistered = true;
         }
 
         /// <summary>
