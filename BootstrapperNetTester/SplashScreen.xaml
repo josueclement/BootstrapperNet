@@ -8,10 +8,12 @@
         Title="SplashScreen" Height="450" Width="800"
         WindowStyle="None"
         WindowStartupLocation="CenterScreen" Background="Gray">
-    <Grid>
+    <DockPanel>
+        <ProgressBar DockPanel.Dock="Bottom" Value="{Binding ProgressValue}" Height="10" />
+        <TextBlock DockPanel.Dock="Bottom" Text="{Binding ProgressText}" Margin="4" />
         <TextBlock Text="Splash screen"
                    FontSize="40"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Center"/>
-    </Grid>
+    </DockPanel>
 </Window>

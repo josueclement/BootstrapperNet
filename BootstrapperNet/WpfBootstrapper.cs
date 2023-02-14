@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -31,6 +32,11 @@ namespace BootstrapperNet
         /// Main window
         /// </summary>
         public Window? MainWindow { get; protected set; }
+
+        /// <summary>
+        /// Action invoked when SplashScreenWindow is displayed
+        /// </summary>
+        public virtual Action? SplashScreenAction { get; set; }
 
         #endregion
 
@@ -116,19 +122,35 @@ namespace BootstrapperNet
             if (IsSplashScreenEnabled)
             {
                 SplashScreenWindow = CreateSplashScreenWindow();
+                SplashScreenWindow.Loaded += SplashScreenWindow_Loaded;
                 SplashScreenWindow.Show();
+            }
+            else
+            {
+                MainWindow.Show();
+                MainWindow.Closing += OnMainWindowClosing;
+            }
+        }
 
-                DateTime splashScreenEnd = DateTime.Now + SplashScreenDuration;
+        private async void SplashScreenWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            SplashScreenWindow!.Loaded -= SplashScreenWindow_Loaded;
 
+            if (SplashScreenAction != null)
+                await Task.Run(SplashScreenAction);
+
+            DateTime splashScreenEnd = DateTime.Now + SplashScreenDuration;
+
+            await Task.Run(() =>
+            {
                 while (DateTime.Now < splashScreenEnd)
                 {
                     Thread.Sleep(200);
                 }
+            });
 
-                SplashScreenWindow.Close();
-            }
-
-            MainWindow.Show();
+            SplashScreenWindow.Close();
+            MainWindow!.Show();
             MainWindow.Closing += OnMainWindowClosing;
         }
 
