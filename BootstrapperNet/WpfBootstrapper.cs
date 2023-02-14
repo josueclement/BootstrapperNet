@@ -45,6 +45,11 @@ namespace BootstrapperNet
         /// <inheritdoc/>
         public override void Run(bool registerUnhandledExceptions = true)
         {
+            if (MainWindow == null)
+                throw new MissingMainWindowException();
+            if (IsSplashScreenEnabled && SplashScreenWindow == null)
+                throw new MissingSplashScreenException();
+
             RaiseStartingEvent();
             ConfigureServices();
 

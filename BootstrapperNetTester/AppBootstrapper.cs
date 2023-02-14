@@ -27,7 +27,7 @@ namespace BootstrapperNetTester
         public override Window? MainWindow => _mainWindow;
         public override bool IsSplashScreenEnabled => true;
         public override Window? SplashScreenWindow => _splashScreen;
-        public override TimeSpan SplashScreenDuration => TimeSpan.FromSeconds(4);
+        public override TimeSpan SplashScreenDuration => TimeSpan.FromSeconds(2);
         public override Action? SplashScreenAction => _splashScreenViewModel.DoSomethingAtStartup;
 
         protected override void ConfigureServices(IServiceCollection services)
