@@ -21,19 +21,14 @@ namespace BootstrapperNetTester
                 DataContext = new MainWindowViewModel { Title = "My main window" }
             };
             _splashScreenViewModel = new SplashScreenViewModel();
-            _splashScreen = new SplashScreen
-            {
-                DataContext = _splashScreenViewModel
-            };
-            SplashScreenAction = _splashScreenViewModel.DoSomethingAtStartup;
+            _splashScreen = new SplashScreen { DataContext = _splashScreenViewModel };
         }
 
+        public override Window? MainWindow => _mainWindow;
         public override bool IsSplashScreenEnabled => true;
+        public override Window? SplashScreenWindow => _splashScreen;
         public override TimeSpan SplashScreenDuration => TimeSpan.FromSeconds(4);
-
-        protected override Window CreateMainWindow() => _mainWindow;
-        protected override Window CreateSplashScreenWindow() => _splashScreen;
-
+        public override Action? SplashScreenAction => _splashScreenViewModel.DoSomethingAtStartup;
 
         protected override void ConfigureServices(IServiceCollection services)
         {

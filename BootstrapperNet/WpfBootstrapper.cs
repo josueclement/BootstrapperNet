@@ -14,29 +14,29 @@ namespace BootstrapperNet
         #region Properties
 
         /// <summary>
-        /// Gets or sets wether the splash screen is enabled
+        /// Main window
         /// </summary>
-        public virtual bool IsSplashScreenEnabled { get; set; }
+        public abstract Window? MainWindow { get; }
 
         /// <summary>
-        /// Gets or sets the splash screen duration
+        /// Gets or sets wether the splash screen is enabled
         /// </summary>
-        public virtual TimeSpan SplashScreenDuration { get; set; } = TimeSpan.FromSeconds(2);
+        public abstract bool IsSplashScreenEnabled { get; }
 
         /// <summary>
         /// Splash screen window
         /// </summary>
-        public Window? SplashScreenWindow { get; protected set; }
-
-        /// <summary>
-        /// Main window
-        /// </summary>
-        public Window? MainWindow { get; protected set; }
+        public virtual Window? SplashScreenWindow { get; }
 
         /// <summary>
         /// Action invoked when SplashScreenWindow is displayed
         /// </summary>
-        public virtual Action? SplashScreenAction { get; set; }
+        public virtual Action? SplashScreenAction { get; }
+
+        /// <summary>
+        /// Gets or sets the splash screen duration
+        /// </summary>
+        public virtual TimeSpan SplashScreenDuration { get; } = TimeSpan.FromSeconds(2);
 
         #endregion
 
@@ -99,36 +99,34 @@ namespace BootstrapperNet
         #region Splash screen and Main window
 
         /// <summary>
-        /// Create a new splash screen window<br />
-        /// Override this method to create your own splash screen window
+        /// Show main window
         /// </summary>
-        /// <returns>Splash screen window</returns>
-        protected virtual Window CreateSplashScreenWindow() => new Window();
+        /// <exception cref="MissingMainWindowException"></exception>
+        protected void ShowMainWindow()
+        {
+            if (MainWindow == null)
+                throw new MissingMainWindowException();
 
-        /// <summary>
-        /// Create a new main window<br />
-        /// Override this method to create your own main window
-        /// </summary>
-        /// <returns>Main window</returns>
-        protected abstract Window CreateMainWindow();
+            MainWindow.Show();
+            MainWindow.Closing += OnMainWindowClosing;
+        }
 
         /// <summary>
         /// Show splash screen and main window
         /// </summary>
-        protected virtual void ShowSplashScreenAndWindow()
+        protected void ShowSplashScreenAndWindow()
         {
-            MainWindow = CreateMainWindow();
-
             if (IsSplashScreenEnabled)
             {
-                SplashScreenWindow = CreateSplashScreenWindow();
+                if (SplashScreenWindow == null)
+                    throw new MissingSplashScreenException();
+
                 SplashScreenWindow.Loaded += SplashScreenWindow_Loaded;
                 SplashScreenWindow.Show();
             }
             else
             {
-                MainWindow.Show();
-                MainWindow.Closing += OnMainWindowClosing;
+                ShowMainWindow();
             }
         }
 
@@ -150,8 +148,7 @@ namespace BootstrapperNet
             });
 
             SplashScreenWindow.Close();
-            MainWindow!.Show();
-            MainWindow.Closing += OnMainWindowClosing;
+            ShowMainWindow();
         }
 
         /// <summary>
