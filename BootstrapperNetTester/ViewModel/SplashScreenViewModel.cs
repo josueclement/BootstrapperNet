@@ -1,4 +1,7 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using BootstrapperNet;
+using BootstrapperNetTester.Services;
+using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.Extensions.DependencyInjection;
 using System.Threading;
 
 namespace BootstrapperNetTester.ViewModel
@@ -21,11 +24,13 @@ namespace BootstrapperNetTester.ViewModel
 
         public void DoSomethingAtStartup()
         {
+            IHelloService? service = Bootstrapper.Current?.ServiceProvider?.GetService<IHelloService>();
+
             for (int i = 1; i <= 100; i++)
             {
                 Thread.Sleep(40);
                 ProgressValue = i;
-                ProgressText = $"Working... {ProgressValue}%";
+                ProgressText = $"Working... {ProgressValue}% - {service?.SayHello()}";
             }
             ProgressValue = 100;
         }
