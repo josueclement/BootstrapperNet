@@ -11,8 +11,7 @@ namespace BootstrapperNet
         private Func<object?, bool>? _canExecuteFunc { get; set; }
         private Action<object?>? _executeAction { get; set; }
 
-
-        #region Constructors
+        #region Constructor
 
         /// <summary>
         /// Constructor for <see cref="WpfCommand"/>
