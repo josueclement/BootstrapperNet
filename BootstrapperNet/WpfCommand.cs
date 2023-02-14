@@ -8,13 +8,11 @@ namespace BootstrapperNet
     /// </summary>
     public class WpfCommand : ICommand
     {
-        #region Constructors
+        private Func<object?, bool>? _canExecuteFunc { get; set; }
+        private Action<object?>? _executeAction { get; set; }
 
-        /// <summary>
-        /// Constructor for <see cref="WpfCommand"/>
-        /// </summary>
-        public WpfCommand()
-        { }
+
+        #region Constructors
 
         /// <summary>
         /// Constructor for <see cref="WpfCommand"/>
@@ -23,23 +21,9 @@ namespace BootstrapperNet
         /// <param name="executeAction">Execute method for the command</param>
         public WpfCommand(Func<object?, bool> canExecuteFunc, Action<object?> executeAction)
         {
-            CanExecuteFunc = canExecuteFunc;
-            ExecuteAction = executeAction;
+            _canExecuteFunc = canExecuteFunc;
+            _executeAction = executeAction;
         }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// CanExecute method
-        /// </summary>
-        public Func<object?, bool>? CanExecuteFunc { get; set; }
-
-        /// <summary>
-        /// Execute method
-        /// </summary>
-        public Action<object?>? ExecuteAction { get; set; }
 
         #endregion
 
@@ -48,10 +32,8 @@ namespace BootstrapperNet
         /// <summary>
         /// Updates the CanExecute of the command
         /// </summary>
-        public void UpdateCanExecute()
-        {
+        public void UpdateCanExecute() =>
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);
-        }
 
         #endregion
 
@@ -61,19 +43,12 @@ namespace BootstrapperNet
         public event EventHandler? CanExecuteChanged;
 
         /// <inheritdoc/>
-        public virtual bool CanExecute(object? parameter)
-        {
-            if (CanExecuteFunc != null)
-                return CanExecuteFunc(parameter);
-            return true;
-        }
+        public virtual bool CanExecute(object? parameter) =>
+            _canExecuteFunc?.Invoke(parameter) ?? false;
 
         /// <inheritdoc/>
-        public virtual void Execute(object? parameter)
-        {
-            if (ExecuteAction != null)
-                ExecuteAction(parameter);
-        }
+        public virtual void Execute(object? parameter) =>
+            _executeAction?.Invoke(parameter);
 
         #endregion
     }
