@@ -135,11 +135,11 @@ namespace BootstrapperNet
         private async void SplashScreenWindow_Loaded(object sender, RoutedEventArgs e)
         {
             SplashScreenWindow!.Loaded -= SplashScreenWindow_Loaded;
+            
+            DateTime splashScreenEnd = DateTime.Now + SplashScreenDuration;
 
             if (SplashScreenAction != null)
                 await Task.Run(SplashScreenAction);
-
-            DateTime splashScreenEnd = DateTime.Now + SplashScreenDuration;
 
             await Task.Run(() =>
             {

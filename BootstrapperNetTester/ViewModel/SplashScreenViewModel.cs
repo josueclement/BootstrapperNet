@@ -28,7 +28,7 @@ namespace BootstrapperNetTester.ViewModel
 
             for (int i = 1; i <= 100; i++)
             {
-                Thread.Sleep(40);
+                Thread.Sleep(90);
                 ProgressValue = i;
                 ProgressText = $"Working... {ProgressValue}% - {service?.SayHello()}";
             }
