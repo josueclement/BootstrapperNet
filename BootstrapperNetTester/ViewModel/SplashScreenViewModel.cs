@@ -3,6 +3,7 @@ using BootstrapperNetTester.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace BootstrapperNetTester.ViewModel
 {
@@ -22,13 +23,13 @@ namespace BootstrapperNetTester.ViewModel
         }
         private string? _progressText;
 
-        public void DoSomethingAtStartup()
+        public async Task DoSomethingAtStartup()
         {
             IHelloService? service = Bootstrapper.Current?.ServiceProvider?.GetService<IHelloService>();
 
             for (int i = 1; i <= 100; i++)
             {
-                Thread.Sleep(10);
+                await Task.Delay(20).ConfigureAwait(false);
                 ProgressValue = i;
                 ProgressText = $"Working... {ProgressValue}% - {service?.SayHello()}";
             }

@@ -31,7 +31,7 @@ namespace BootstrapperNet
         /// <summary>
         /// Action invoked when SplashScreenWindow is displayed
         /// </summary>
-        public virtual Action? SplashScreenAction { get; }
+        public virtual Func<Task>? SplashScreenAction { get; }
 
         /// <summary>
         /// Gets or sets the splash screen duration
@@ -142,7 +142,7 @@ namespace BootstrapperNet
             DateTime splashScreenEnd = DateTime.Now + SplashScreenDuration;
 
             if (SplashScreenAction != null)
-                await Task.Run(SplashScreenAction);
+                await SplashScreenAction();
 
             await Task.Run(() =>
             {

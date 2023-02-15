@@ -3,6 +3,7 @@ using BootstrapperNetTester.Services;
 using BootstrapperNetTester.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace BootstrapperNetTester
@@ -28,7 +29,7 @@ namespace BootstrapperNetTester
         public override bool IsSplashScreenEnabled => true;
         public override Window? SplashScreenWindow => _splashScreen;
         public override TimeSpan SplashScreenDuration => TimeSpan.FromSeconds(2);
-        public override Action? SplashScreenAction => _splashScreenViewModel.DoSomethingAtStartup;
+        public override Func<Task>? SplashScreenAction => _splashScreenViewModel.DoSomethingAtStartup;
 
         protected override void ConfigureServices(IServiceCollection services)
         {
