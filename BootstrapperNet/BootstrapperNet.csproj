@@ -13,6 +13,8 @@
 	  <RepositoryUrl>https://github.com/josueclement/BootstrapperNet.git</RepositoryUrl>
 	  <RepositoryType>git</RepositoryType>
 	  <LangVersion>10.0</LangVersion>
+	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	  <Title>BootstrapperNet</Title>
   </PropertyGroup>
 
   <ItemGroup>
